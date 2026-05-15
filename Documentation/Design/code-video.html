@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-primary-fixed-variant": "#3622ca",
+                      "primary-container": "#8781ff",
+                      "surface": "#111319",
+                      "surface-dim": "#111319",
+                      "on-background": "#e2e2eb",
+                      "inverse-on-surface": "#2e3037",
+                      "on-secondary-fixed": "#002118",
+                      "surface-container-high": "#282a30",
+                      "tertiary-container": "#db761f",
+                      "background": "#111319",
+                      "on-tertiary": "#502500",
+                      "tertiary-fixed-dim": "#ffb785",
+                      "surface-bright": "#373940",
+                      "outline-variant": "#464555",
+                      "accent-danger": "#FF5C6C",
+                      "bg-elevated": "#22263A",
+                      "surface-variant": "#33343b",
+                      "surface-tint": "#c4c0ff",
+                      "on-tertiary-fixed": "#301400",
+                      "on-error-container": "#ffdad6",
+                      "primary": "#c4c0ff",
+                      "on-surface": "#e2e2eb",
+                      "border-focus": "#5C6BC0",
+                      "surface-container-lowest": "#0c0e14",
+                      "secondary-fixed-dim": "#28dfb5",
+                      "on-tertiary-container": "#461f00",
+                      "primary-fixed": "#e3dfff",
+                      "text-secondary": "#8B90B8",
+                      "on-secondary": "#00382b",
+                      "bg-surface": "#1A1D27",
+                      "surface-container-highest": "#33343b",
+                      "outline": "#918fa1",
+                      "on-primary-fixed": "#100069",
+                      "secondary": "#41eec2",
+                      "on-primary": "#2000a4",
+                      "inverse-surface": "#e2e2eb",
+                      "tertiary-fixed": "#ffdcc6",
+                      "inverse-primary": "#4f44e2",
+                      "on-surface-variant": "#c7c4d8",
+                      "surface-container-low": "#191b22",
+                      "bg-hover": "#2A2F47",
+                      "secondary-container": "#00d1a7",
+                      "border": "#2E3250",
+                      "on-secondary-container": "#005441",
+                      "error-container": "#93000a",
+                      "surface-container": "#1e1f26",
+                      "on-tertiary-fixed-variant": "#713700",
+                      "on-error": "#690005",
+                      "accent-warning": "#FFB347",
+                      "primary-fixed-dim": "#c4c0ff",
+                      "tertiary": "#ffb785",
+                      "text-muted": "#5A5F80",
+                      "on-primary-container": "#1b0091",
+                      "secondary-fixed": "#55fcd0",
+                      "error": "#ffb4ab",
+                      "on-secondary-fixed-variant": "#00513f",
+                      "text-primary": "#E8EAFF"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.125rem",
+                      "lg": "0.25rem",
+                      "xl": "0.5rem",
+                      "full": "0.75rem"
+              },
+              "spacing": {
+                      "element-gap": "0.5rem",
+                      "statusbar-height": "24px",
+                      "container-padding": "1rem",
+                      "sidebar-width": "200px",
+                      "internal-padding": "0.75rem"
+              },
+              "fontFamily": {
+                      "body": ["Inter"],
+                      "section-header": ["Inter"],
+                      "app-title": ["Inter"],
+                      "metadata": ["Inter"],
+                      "code": ["JetBrains Mono"]
+              },
+              "fontSize": {
+                      "body": ["12px", {"lineHeight": "16px", "fontWeight": "400"}],
+                      "section-header": ["13px", {"lineHeight": "18px", "fontWeight": "600"}],
+                      "app-title": ["14px", {"lineHeight": "20px", "fontWeight": "500"}],
+                      "metadata": ["11px", {"lineHeight": "14px", "letterSpacing": "0.01em", "fontWeight": "400"}],
+                      "code": ["11px", {"lineHeight": "16px", "fontWeight": "400"}]
+              }
+            },
+          },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 20;
+            font-size: 18px;
+        }
+        body {
+            background-color: #111319;
+            color: #e2e2eb;
+            overflow: hidden;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #191b22;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #2E3250;
+        }
+    </style>
+</head>
+<body class="flex flex-col h-screen font-body text-body">
+<!-- TopAppBar -->
+<header class="bg-surface-container-lowest dark:bg-surface-container-lowest text-primary flex justify-between items-center h-8 px-4 w-full border-b border-border fixed top-0 z-50">
+<div class="flex items-center gap-2">
+<span class="font-app-title text-app-title font-bold text-on-surface">Kore</span>
+</div>
+<div class="flex items-center gap-4 h-full">
+<div class="flex items-center gap-1">
+<button class="hover:bg-bg-hover transition-colors p-1 flex items-center justify-center active:scale-95 duration-100">
+<span class="material-symbols-outlined" data-icon="remove">remove</span>
+</button>
+<button class="hover:bg-bg-hover transition-colors p-1 flex items-center justify-center active:scale-95 duration-100">
+<span class="material-symbols-outlined" data-icon="crop_square">crop_square</span>
+</button>
+<button class="hover:bg-bg-hover transition-colors p-1 flex items-center justify-center active:scale-95 duration-100">
+<span class="material-symbols-outlined" data-icon="close">close</span>
+</button>
+</div>
+</div>
+</header>
+<div class="flex flex-1 pt-8 pb-6">
+<!-- SideNavBar -->
+<aside class="w-sidebar-width bg-surface-container-low border-r border-border flex flex-col pt-4 shrink-0">
+<div class="px-4 mb-6">
+<h1 class="font-app-title text-app-title text-primary font-bold">Kore</h1>
+<p class="font-section-header text-section-header text-text-secondary">Utility Suite</p>
+</div>
+<nav class="flex flex-col gap-1">
+<!-- Image Tab -->
+<a class="flex items-center gap-3 px-4 py-2 text-text-secondary hover:bg-bg-hover hover:text-text-primary transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="image">image</span>
+<span class="font-body text-body">Image</span>
+</a>
+<!-- Video Tab (ACTIVE) -->
+<a class="flex items-center gap-3 px-4 py-2 text-text-primary bg-bg-hover border-l-2 border-primary active:scale-[0.97] transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="movie">movie</span>
+<span class="font-body text-body">Video</span>
+</a>
+<!-- Settings Tab -->
+<a class="flex items-center gap-3 px-4 py-2 text-text-secondary hover:bg-bg-hover hover:text-text-primary transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span class="font-body text-body">Settings</span>
+</a>
+</nav>
+</aside>
+<!-- Main Content Area -->
+<main class="flex-1 flex flex-col overflow-hidden bg-surface">
+<div class="flex-1 p-container-padding overflow-y-auto custom-scrollbar">
+<div class="max-w-4xl mx-auto space-y-6">
+<!-- Header Section -->
+<div class="border-b border-border pb-4">
+<h2 class="font-section-header text-section-header text-text-primary mb-1">Video Acquisition Module</h2>
+<p class="font-metadata text-metadata text-text-muted uppercase tracking-wider">Engineered Media Downloader v2.4</p>
+</div>
+<!-- Input Section -->
+<div class="grid grid-cols-1 md:grid-cols-4 gap-element-gap items-end">
+<div class="md:col-span-3 space-y-2">
+<label class="font-metadata text-metadata text-text-secondary block px-1">Source URL</label>
+<input class="w-full bg-bg-elevated border border-border text-text-primary font-code text-code px-3 py-2 focus:border-border-focus focus:ring-0 outline-none rounded-lg" placeholder="https://example.com/video/v_123456789" type="text"/>
+</div>
+<button class="bg-primary text-on-primary font-section-header text-section-header px-4 h-[34px] rounded-lg hover:opacity-90 active:scale-95 transition-all">
+                            Fetch Info
+                        </button>
+</div>
+<!-- Controls Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-container-padding">
+<!-- Quality Selector Card -->
+<div class="bg-surface-container border border-border p-internal-padding rounded-lg">
+<label class="font-metadata text-metadata text-text-secondary block mb-3 uppercase font-bold">Select Quality Profile</label>
+<div class="grid grid-cols-2 gap-2">
+<button class="bg-bg-elevated border border-border-focus text-primary p-2 flex items-center justify-between rounded hover:bg-bg-hover transition-colors">
+<span class="font-code text-code">2160p (4K)</span>
+<span class="material-symbols-outlined text-[14px]" data-icon="check_circle">check_circle</span>
+</button>
+<button class="bg-bg-elevated border border-border text-text-secondary p-2 flex items-center justify-between rounded hover:bg-bg-hover transition-colors">
+<span class="font-code text-code">1080p (FHD)</span>
+</button>
+<button class="bg-bg-elevated border border-border text-text-secondary p-2 flex items-center justify-between rounded hover:bg-bg-hover transition-colors">
+<span class="font-code text-code">720p (HD)</span>
+</button>
+<button class="bg-bg-elevated border border-border text-text-secondary p-2 flex items-center justify-between rounded hover:bg-bg-hover transition-colors">
+<span class="font-code text-code">480p (SD)</span>
+</button>
+</div>
+</div>
+<!-- Info Card -->
+<div class="bg-surface-container border border-border p-internal-padding rounded-lg flex gap-4">
+<div class="w-24 h-16 bg-surface-container-highest shrink-0 relative rounded-lg overflow-hidden border border-border">
+<img alt="Video Thumbnail" class="w-full h-full object-cover opacity-60" data-alt="A cinematic, high-definition close-up of a high-tech computer screen displaying flowing code and digital data visualizations. The lighting is moody and dark, reflecting the professional engineering-tool aesthetic of the interface. Subtle glows of purple and teal illuminate the dark, metallic surfaces of the surrounding workstation, creating a sophisticated and utilitarian atmosphere." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD8vA1BwkEGaYiEGHxnZq5rRClRgR8_f1LwNZEkGJK0f54l8hMr0HszrrJe9Y56IwXK3dvdlIdIzJ0DHVbRenF7GmtsWa99f750fUQppBmw1LQ9V9nl2AzU8tbYBANtWWJsLYY5QAY7DVHd08AcMlTkjiyBmSwALFZm2R-U8kIeWZj2blYT_FyqK4ha_9t0szJc7WYNpjOc2HQAAFkYEm4D-26ZUzeD2iwphN1ynbDZlE1uAeaLtX6ukaiuNDSYF_WJdRXqlO-h9_-8"/>
+</div>
+<div class="flex-1 flex flex-col justify-center">
+<p class="font-section-header text-section-header text-text-primary line-clamp-1">Stream_Asset_Final_v02.mp4</p>
+<p class="font-metadata text-metadata text-text-muted">MPEG-4 · 1.2 GB · H.264</p>
+</div>
+</div>
+</div>
+<!-- Progress Section -->
+<div class="bg-surface-container-high border border-border p-6 rounded-lg space-y-4">
+<div class="flex justify-between items-end">
+<div class="space-y-1">
+<h3 class="font-section-header text-section-header text-primary">Active Download</h3>
+<p class="font-body text-body text-text-secondary">Downloading... 42% · 3.2 MB/s · ETA 12s</p>
+</div>
+<button class="bg-surface-container-highest border border-border text-text-primary font-metadata text-metadata px-3 py-1 flex items-center gap-2 rounded hover:bg-bg-hover transition-colors">
+<span class="material-symbols-outlined text-[14px]" data-icon="folder_open">folder_open</span>
+                                Open Folder
+                            </button>
+</div>
+<!-- Progress Bar Container -->
+<div class="relative w-full h-2 bg-bg-elevated rounded-full overflow-hidden">
+<!-- Gradient Fill -->
+<div class="absolute left-0 top-0 h-full w-[42%] bg-gradient-to-r from-primary to-secondary transition-all duration-500 ease-out"></div>
+</div>
+<div class="flex justify-between font-metadata text-metadata text-text-muted">
+<span>504.0 MB / 1.2 GB</span>
+<span>Task ID: K-88912-V</span>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+<!-- Footer -->
+<footer class="bg-surface-container-lowest dark:bg-surface-container-lowest text-text-muted font-metadata text-metadata flex items-center justify-between px-3 w-full h-[24px] border-t border-border fixed bottom-0 z-50">
+<div class="flex items-center gap-4">
+<span class="opacity-50">Kore v1.0.4 | GPU: NVIDIA RTX | System Ready</span>
+<div class="flex items-center gap-2">
+<span class="w-1.5 h-1.5 bg-secondary rounded-full"></span>
+<span class="text-secondary">Live</span>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<a class="hover:text-text-primary transition-colors" href="#">Documentation</a>
+<a class="hover:text-text-primary transition-colors" href="#">Support</a>
+</div>
+</footer>
+</body></html>

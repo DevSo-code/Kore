@@ -1,0 +1,26 @@
+version: 1.0.0
+AppDir:
+  path: ./AppDir
+  app_info:
+    id: com.koreapp.kore
+    name: Kore
+    icon: kore
+    version: 1.0.0
+    exec: usr/bin/kore
+    exec_args: $@
+  files:
+    exclude:
+    - usr/share/man
+    - usr/share/doc
+  runtime:
+    env:
+      PYTHONPATH: $APPDIR/usr/lib/python3.11/site-packages:$APPDIR/src:$APPDIR/usr/lib/python3.11/site-packages
+  test:
+    ubuntu:
+      image: ubuntu:22.04
+      command: ./AppDir/usr/bin/kore --help
+
+AppImage:
+  update-information: None
+  sign-key: None
+  arch: x86_64

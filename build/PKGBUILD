@@ -1,0 +1,61 @@
+# PKGBUILD for Kore
+# Maintainer: Your Name <your.email@example.com>
+
+pkgname=kore
+pkgver=1.0.0
+pkgrel=1
+pkgdesc="One app. Every tool. Zero ads. - Local-first desktop utility suite"
+arch=('x86_64')
+url="https://github.com/yourusername/kore"
+license=('MIT')
+depends=('python>=3.11' 'tk' 'ffmpeg')
+makedepends=('python-setuptools' 'python-pip')
+source=("$pkgname-$pkgver.tar.gz")
+sha256sums=('SKIP')
+
+build() {
+  cd "$srcdir/$pkgname-$pkgver"
+  python -m venv build/venv
+  source build/venv/bin/activate
+  pip install -r requirements.txt
+}
+
+package() {
+  cd "$srcdir/$pkgname-$pkgver"
+  
+  # Create directories
+  install -d "$pkgdir/opt/$pkgname"
+  install -d "$pkgdir/usr/bin"
+  install -d "$pkgdir/usr/share/applications"
+  install -d "$pkgdir/usr/share/icons/hicolor/256x256/apps"
+  
+  # Copy application files
+  cp -r src "$pkgdir/opt/$pkgname/"
+  cp -r Documentation "$pkgdir/opt/$pkgname/"
+  cp requirements.txt "$pkgdir/opt/$pkgname/"
+  
+  # Create launcher script
+  cat > "$pkgdir/usr/bin/$pkgname" << EOF
+#!/bin/bash
+cd /opt/$pkgname
+python src/main.py "\$@"
+EOF
+  chmod +x "$pkgdir/usr/bin/$pkgname"
+  
+  # Create desktop entry
+  cat > "$pkgdir/usr/share/applications/$pkgname.desktop" << EOF
+[Desktop Entry]
+Name=Kore
+Comment=Local-first desktop utility suite
+Exec=/usr/bin/kore
+Icon=kore
+Terminal=false
+Type=Application
+Categories=Utility;Graphics;
+EOF
+  
+  # Copy icon (if exists)
+  if [ -f "build/kore.png" ]; then
+    cp build/kore.png "$pkgdir/usr/share/icons/hicolor/256x256/apps/kore.png"
+  fi
+}

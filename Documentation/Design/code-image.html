@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;family=JetBrains+Mono&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-primary-fixed-variant": "#3622ca",
+                    "primary-container": "#8781ff",
+                    "surface": "#111319",
+                    "surface-dim": "#111319",
+                    "on-background": "#e2e2eb",
+                    "inverse-on-surface": "#2e3037",
+                    "on-secondary-fixed": "#002118",
+                    "surface-container-high": "#282a30",
+                    "tertiary-container": "#db761f",
+                    "background": "#111319",
+                    "on-tertiary": "#502500",
+                    "tertiary-fixed-dim": "#ffb785",
+                    "surface-bright": "#373940",
+                    "outline-variant": "#464555",
+                    "accent-danger": "#FF5C6C",
+                    "bg-elevated": "#22263A",
+                    "surface-variant": "#33343b",
+                    "surface-tint": "#c4c0ff",
+                    "on-tertiary-fixed": "#301400",
+                    "on-error-container": "#ffdad6",
+                    "primary": "#c4c0ff",
+                    "on-surface": "#e2e2eb",
+                    "border-focus": "#5C6BC0",
+                    "surface-container-lowest": "#0c0e14",
+                    "secondary-fixed-dim": "#28dfb5",
+                    "on-tertiary-container": "#461f00",
+                    "primary-fixed": "#e3dfff",
+                    "text-secondary": "#8B90B8",
+                    "on-secondary": "#00382b",
+                    "bg-surface": "#1A1D27",
+                    "surface-container-highest": "#33343b",
+                    "outline": "#918fa1",
+                    "on-primary-fixed": "#100069",
+                    "secondary": "#41eec2",
+                    "on-primary": "#2000a4",
+                    "inverse-surface": "#e2e2eb",
+                    "tertiary-fixed": "#ffdcc6",
+                    "inverse-primary": "#4f44e2",
+                    "on-surface-variant": "#c7c4d8",
+                    "surface-container-low": "#191b22",
+                    "bg-hover": "#2A2F47",
+                    "secondary-container": "#00d1a7",
+                    "border": "#2E3250",
+                    "on-secondary-container": "#005441",
+                    "error-container": "#93000a",
+                    "surface-container": "#1e1f26",
+                    "on-tertiary-fixed-variant": "#713700",
+                    "on-error": "#690005",
+                    "accent-warning": "#FFB347",
+                    "primary-fixed-dim": "#c4c0ff",
+                    "tertiary": "#ffb785",
+                    "text-muted": "#5A5F80",
+                    "on-primary-container": "#1b0091",
+                    "secondary-fixed": "#55fcd0",
+                    "error": "#ffb4ab",
+                    "on-secondary-fixed-variant": "#00513f",
+                    "text-primary": "#E8EAFF"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "element-gap": "0.5rem",
+                    "statusbar-height": "24px",
+                    "container-padding": "1rem",
+                    "sidebar-width": "200px",
+                    "internal-padding": "0.75rem"
+            },
+            "fontFamily": {
+                    "body": ["Inter"],
+                    "section-header": ["Inter"],
+                    "app-title": ["Inter"],
+                    "metadata": ["Inter"],
+                    "code": ["JetBrains Mono"]
+            },
+            "fontSize": {
+                    "body": ["12px", {"lineHeight": "16px", "fontWeight": "400"}],
+                    "section-header": ["13px", {"lineHeight": "18px", "fontWeight": "600"}],
+                    "app-title": ["14px", {"lineHeight": "20px", "fontWeight": "500"}],
+                    "metadata": ["11px", {"lineHeight": "14px", "letterSpacing": "0.01em", "fontWeight": "400"}],
+                    "code": ["11px", {"lineHeight": "16px", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            font-size: 18px;
+        }
+        .checkerboard {
+            background-image: linear-gradient(45deg, #1A1D27 25%, transparent 25%), 
+                              linear-gradient(-45deg, #1A1D27 25%, transparent 25%), 
+                              linear-gradient(45deg, transparent 75%, #1A1D27 75%), 
+                              linear-gradient(-45deg, transparent 75%, #1A1D27 75%);
+            background-size: 20px 20px;
+            background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
+            background-color: #111319;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body text-body selection:bg-primary-container selection:text-on-primary-container overflow-hidden">
+<!-- Top Navigation Bar -->
+<header class="bg-surface-container-lowest text-primary flex justify-between items-center h-8 px-4 w-full docked full-width top-0 border-b border-border z-50">
+<div class="flex items-center gap-2">
+<span class="font-app-title text-app-title font-bold text-on-surface">Kore</span>
+<span class="text-text-muted px-2 border-l border-border font-metadata text-metadata">Image Module</span>
+</div>
+<div class="flex items-center gap-1">
+<button class="w-8 h-8 flex items-center justify-center hover:bg-bg-hover transition-colors Active: scale-95 transition-transform duration-100">
+<span class="material-symbols-outlined text-text-secondary">remove</span>
+</button>
+<button class="w-8 h-8 flex items-center justify-center hover:bg-bg-hover transition-colors Active: scale-95 transition-transform duration-100">
+<span class="material-symbols-outlined text-text-secondary">crop_square</span>
+</button>
+<button class="w-8 h-8 flex items-center justify-center hover:bg-bg-hover transition-colors Active: scale-95 transition-transform duration-100">
+<span class="material-symbols-outlined text-text-secondary">close</span>
+</button>
+</div>
+</header>
+<div class="flex h-[calc(100vh-32px-24px)] mt-8">
+<!-- Sidebar Navigation -->
+<nav class="bg-surface-container-low text-primary flex flex-col h-full pt-4 docked h-full left-0 w-sidebar-width border-r border-border shrink-0">
+<div class="px-4 mb-6">
+<h2 class="font-app-title text-app-title text-primary font-bold">Kore</h2>
+<p class="font-metadata text-metadata text-text-muted">Utility Suite</p>
+</div>
+<div class="flex flex-col gap-1">
+<a class="flex items-center gap-3 px-4 py-2 text-text-primary bg-bg-hover border-l-2 border-primary font-body text-body scale-[0.97] transition-all" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">image</span>
+<span>Image</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-2 text-text-secondary hover:bg-bg-hover hover:text-text-primary transition-all font-body text-body" href="#">
+<span class="material-symbols-outlined">movie</span>
+<span>Video</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-2 text-text-secondary hover:bg-bg-hover hover:text-text-primary transition-all font-body text-body" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span>Settings</span>
+</a>
+</div>
+</nav>
+<!-- Main Content Canvas -->
+<main class="flex-1 overflow-y-auto bg-background p-container-padding flex flex-col gap-4">
+<!-- Section Header -->
+<div class="flex justify-between items-end">
+<div>
+<h1 class="font-section-header text-section-header text-text-primary">Background Removal</h1>
+<p class="font-metadata text-metadata text-text-muted">Professional transparency extraction and subject isolation.</p>
+</div>
+<div class="flex gap-2">
+<button class="flex items-center gap-2 px-3 py-1.5 bg-transparent border border-border text-text-primary rounded-lg hover:bg-bg-hover transition-all active:scale-[0.97]">
+<span class="material-symbols-outlined text-[16px]">save</span>
+<span class="font-body text-body">Save As</span>
+</button>
+<button class="flex items-center gap-2 px-3 py-1.5 bg-primary text-on-primary rounded-lg hover:opacity-90 transition-all active:scale-[0.97]">
+<span class="material-symbols-outlined text-[16px]">auto_fix_high</span>
+<span class="font-body text-body">Remove Background</span>
+</button>
+</div>
+</div>
+<!-- Bento Layout Content -->
+<div class="grid grid-cols-12 gap-4 flex-1 min-h-0">
+<!-- Drop Zone Area -->
+<div class="col-span-12 xl:col-span-5 flex flex-col gap-4 h-full">
+<div class="flex-1 bg-bg-surface border-2 border-dashed border-border rounded-xl flex flex-col items-center justify-center p-8 text-center hover:border-primary transition-colors group cursor-pointer">
+<div class="w-12 h-12 bg-bg-elevated rounded-full flex items-center justify-center mb-4 group-hover:bg-primary/10 transition-colors">
+<span class="material-symbols-outlined text-text-secondary group-hover:text-primary">upload_file</span>
+</div>
+<h3 class="font-section-header text-section-header text-text-primary mb-1">Upload Source Image</h3>
+<p class="font-metadata text-metadata text-text-muted max-w-[200px]">Drag and drop your file here or click to browse files</p>
+<div class="mt-4 px-3 py-1 bg-surface-container rounded-full text-text-muted font-metadata text-metadata border border-border">
+                            PNG, JPG, WEBP (Max 20MB)
+                        </div>
+</div>
+<!-- Quick Settings Panel -->
+<div class="bg-surface-container border border-border rounded-xl p-4">
+<h4 class="font-section-header text-section-header text-text-primary mb-3">Refinement Settings</h4>
+<div class="space-y-4">
+<div class="flex flex-col gap-2">
+<div class="flex justify-between items-center">
+<label class="font-metadata text-metadata text-text-secondary">Edge Smoothness</label>
+<span class="font-code text-code text-primary">0.4px</span>
+</div>
+<div class="h-1 bg-bg-elevated rounded-full overflow-hidden">
+<div class="h-full bg-gradient-to-r from-primary to-secondary w-[40%]"></div>
+</div>
+</div>
+<div class="flex items-center justify-between">
+<span class="font-metadata text-metadata text-text-secondary">Alpha Matting</span>
+<div class="w-8 h-4 bg-primary rounded-full relative">
+<div class="absolute right-0.5 top-0.5 w-3 h-3 bg-on-primary rounded-full"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Comparison Workspace -->
+<div class="col-span-12 xl:col-span-7 bg-surface-container border border-border rounded-xl flex flex-col overflow-hidden">
+<div class="flex items-center justify-between px-4 py-2 border-b border-border bg-surface-container-high">
+<div class="flex gap-4">
+<button class="font-body text-body text-primary border-b-2 border-primary pb-1">Comparison</button>
+<button class="font-body text-body text-text-secondary hover:text-text-primary pb-1">Mask Overlay</button>
+</div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-text-secondary cursor-pointer hover:text-primary">zoom_in</span>
+<span class="material-symbols-outlined text-text-secondary cursor-pointer hover:text-primary">zoom_out</span>
+<span class="material-symbols-outlined text-text-secondary cursor-pointer hover:text-primary">fullscreen</span>
+</div>
+</div>
+<div class="flex-1 flex flex-col md:flex-row divide-y md:divide-y-0 md:divide-x divide-border">
+<!-- Before -->
+<div class="flex-1 relative group overflow-hidden">
+<img class="w-full h-full object-cover grayscale-[0.2]" data-alt="A professional portrait of a woman with detailed hair texture against a complex, slightly blurred architectural city background during the golden hour. The lighting is soft and warm, highlighting the intricate edges of her hair and silhouette. High-resolution photography style with deep shadows and clear focus on the subject." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDrEpYXhNMjWb9vBI7pIkp_KbQb7eO0A9RKADogt157tMUbJ-IFNEsi7CIBVcQcQP1s7-unZSsvois5HnhjZED7ecvrSswdXjKwTr2iPG8LLyL5yjr0LDLGiSwCV3_rECFlsM-FfY_W7lnrS6uWY4dKhJ8sF6D0c0P57EALCWta2pXqwiZgCp9g4E6oUJXyiQDseuHqxnhGFJgGXYx_5HGEwC_PkzVYzU-XCVA0Ngmd2k4zwclvr7zDL5caAvPNK27jIAfggEI8lgFB"/>
+<div class="absolute top-2 left-2 px-2 py-0.5 bg-black/60 backdrop-blur-md rounded font-metadata text-metadata text-white border border-white/10 uppercase tracking-wider">Original</div>
+</div>
+<!-- After -->
+<div class="flex-1 relative group checkerboard overflow-hidden flex items-center justify-center">
+<div class="relative w-full h-full">
+<img class="w-full h-full object-cover mix-blend-normal [mask-image:radial-gradient(ellipse_at_center,black_100%,transparent_100%)]" data-alt="A high-precision subject isolation of a woman's portrait, where the background has been completely removed to reveal a transparent checkerboard pattern. The cut-out edges of the hair are incredibly fine and detailed, demonstrating advanced alpha matting techniques. The subject remains in full color with vibrant skin tones and sharp clarity, isolated perfectly for professional graphic design use." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAatKiYoAjDCz7kYxTXOh_qjKZd_qk-iqYkdjVdVRM8uayr5kSEoJA-FMY6vgj17-ZrprkFOMfTH39UU9JhXRkpd00RSnu3i2Ksn9Gz-N4wVUrKmszOeYL1d8rwXEow84cud83WTF3Pjg5R2UNFP4xI-nUX8hzfRmIMGbSHyER-R570Z2OR28fsrBI0IV9cggseRQDjBpzGsLccGIlt8geqkhNJwxXHQ3Flk2V0xmY98t3cQ4a9OB2INgaNHkcM-Hc62IKdAqFZJZ4w" style="clip-path: inset(0 0 0 0);"/>
+</div>
+<div class="absolute top-2 left-2 px-2 py-0.5 bg-primary/80 backdrop-blur-md rounded font-metadata text-metadata text-on-primary border border-primary/20 uppercase tracking-wider">Processed</div>
+<!-- Slider Handle (Visual UI only) -->
+<div class="absolute inset-y-0 left-0 w-1 bg-primary/50 shadow-[0_0_10px_rgba(196,192,255,0.5)]"></div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+<!-- Status Bar Footer -->
+<footer class="fixed bottom-0 w-full h-[24px] bg-surface-container-lowest text-text-muted flex items-center justify-between px-3 border-t border-border font-metadata text-metadata z-50">
+<div class="flex items-center gap-4">
+<span class="flex items-center gap-1.5">
+<span class="w-2 h-2 rounded-full bg-secondary"></span>
+                System Ready
+            </span>
+<span class="opacity-50">|</span>
+<span class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[12px]">memory</span>
+                GPU: NVIDIA RTX 4090
+            </span>
+<span class="opacity-50">|</span>
+<span>VRAM: 8.2GB / 24GB</span>
+</div>
+<div class="flex items-center gap-4">
+<div class="flex gap-3">
+<a class="hover:text-text-primary transition-colors" href="#">Documentation</a>
+<a class="hover:text-text-primary transition-colors" href="#">Support</a>
+</div>
+<span class="font-metadata text-metadata opacity-50">Kore v1.0.4</span>
+</div>
+</footer>
+</body></html>

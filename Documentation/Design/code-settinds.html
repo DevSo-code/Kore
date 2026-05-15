@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-primary-fixed-variant": "#3622ca",
+                        "primary-container": "#8781ff",
+                        "surface": "#111319",
+                        "surface-dim": "#111319",
+                        "on-background": "#e2e2eb",
+                        "inverse-on-surface": "#2e3037",
+                        "on-secondary-fixed": "#002118",
+                        "surface-container-high": "#282a30",
+                        "tertiary-container": "#db761f",
+                        "background": "#111319",
+                        "on-tertiary": "#502500",
+                        "tertiary-fixed-dim": "#ffb785",
+                        "surface-bright": "#373940",
+                        "outline-variant": "#464555",
+                        "accent-danger": "#FF5C6C",
+                        "bg-elevated": "#22263A",
+                        "surface-variant": "#33343b",
+                        "surface-tint": "#c4c0ff",
+                        "on-tertiary-fixed": "#301400",
+                        "on-error-container": "#ffdad6",
+                        "primary": "#c4c0ff",
+                        "on-surface": "#e2e2eb",
+                        "border-focus": "#5C6BC0",
+                        "surface-container-lowest": "#0c0e14",
+                        "secondary-fixed-dim": "#28dfb5",
+                        "on-tertiary-container": "#461f00",
+                        "primary-fixed": "#e3dfff",
+                        "text-secondary": "#8B90B8",
+                        "on-secondary": "#00382b",
+                        "bg-surface": "#1A1D27",
+                        "surface-container-highest": "#33343b",
+                        "outline": "#918fa1",
+                        "on-primary-fixed": "#100069",
+                        "secondary": "#41eec2",
+                        "on-primary": "#2000a4",
+                        "inverse-surface": "#e2e2eb",
+                        "tertiary-fixed": "#ffdcc6",
+                        "inverse-primary": "#4f44e2",
+                        "on-surface-variant": "#c7c4d8",
+                        "surface-container-low": "#191b22",
+                        "bg-hover": "#2A2F47",
+                        "secondary-container": "#00d1a7",
+                        "border": "#2E3250",
+                        "on-secondary-container": "#005441",
+                        "error-container": "#93000a",
+                        "surface-container": "#1e1f26",
+                        "on-tertiary-fixed-variant": "#713700",
+                        "on-error": "#690005",
+                        "accent-warning": "#FFB347",
+                        "primary-fixed-dim": "#c4c0ff",
+                        "tertiary": "#ffb785",
+                        "text-muted": "#5A5F80",
+                        "on-primary-container": "#1b0091",
+                        "secondary-fixed": "#55fcd0",
+                        "error": "#ffb4ab",
+                        "on-secondary-fixed-variant": "#00513f",
+                        "text-primary": "#E8EAFF"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "element-gap": "0.5rem",
+                        "statusbar-height": "24px",
+                        "container-padding": "1rem",
+                        "sidebar-width": "200px",
+                        "internal-padding": "0.75rem"
+                    },
+                    "fontFamily": {
+                        "body": ["Inter"],
+                        "section-header": ["Inter"],
+                        "app-title": ["Inter"],
+                        "metadata": ["Inter"],
+                        "code": ["JetBrains Mono"]
+                    },
+                    "fontSize": {
+                        "body": ["12px", {"lineHeight": "16px", "fontWeight": "400"}],
+                        "section-header": ["13px", {"lineHeight": "18px", "fontWeight": "600"}],
+                        "app-title": ["14px", {"lineHeight": "20px", "fontWeight": "500"}],
+                        "metadata": ["11px", {"lineHeight": "14px", "letterSpacing": "0.01em", "fontWeight": "400"}],
+                        "code": ["11px", {"lineHeight": "16px", "fontWeight": "400"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 20;
+            font-size: 18px;
+        }
+        ::-webkit-scrollbar { width: 4px; height: 4px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #2E3250; border-radius: 2px; }
+        ::-webkit-scrollbar-thumb:hover { background: #5C6BC0; }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body text-body selection:bg-primary/30 h-screen flex flex-col overflow-hidden">
+<!-- TopAppBar -->
+<header class="bg-surface-container-lowest border-b border-border flex justify-between items-center h-8 px-4 w-full z-50">
+<div class="flex items-center gap-2">
+<span class="font-app-title text-app-title font-bold text-on-surface">Kore</span>
+</div>
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-3">
+<button class="text-text-secondary hover:bg-bg-hover transition-colors p-1 flex items-center justify-center">
+<span class="material-symbols-outlined" data-icon="remove">remove</span>
+</button>
+<button class="text-text-secondary hover:bg-bg-hover transition-colors p-1 flex items-center justify-center">
+<span class="material-symbols-outlined" data-icon="crop_square">crop_square</span>
+</button>
+<button class="text-text-secondary hover:bg-bg-hover transition-colors p-1 flex items-center justify-center">
+<span class="material-symbols-outlined" data-icon="close">close</span>
+</button>
+</div>
+</div>
+</header>
+<div class="flex flex-1 overflow-hidden">
+<!-- SideNavBar -->
+<aside class="w-sidebar-width bg-surface-container-low border-r border-border flex flex-col h-full pt-4 z-40">
+<div class="px-4 mb-6">
+<h1 class="font-app-title text-app-title text-primary font-bold">Kore</h1>
+<p class="font-section-header text-metadata text-text-muted">Utility Suite</p>
+</div>
+<nav class="flex flex-col gap-1 px-2">
+<a class="flex items-center gap-3 px-2 py-1.5 rounded text-text-secondary hover:bg-bg-hover hover:text-text-primary transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="image">image</span>
+<span class="font-body text-body">Image</span>
+</a>
+<a class="flex items-center gap-3 px-2 py-1.5 rounded text-text-secondary hover:bg-bg-hover hover:text-text-primary transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="movie">movie</span>
+<span class="font-body text-body">Video</span>
+</a>
+<a class="flex items-center gap-3 px-2 py-1.5 rounded text-text-primary bg-bg-hover border-l-2 border-primary scale-[0.97] transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span class="font-body text-body">Settings</span>
+</a>
+</nav>
+</aside>
+<!-- Main Content Canvas -->
+<main class="flex-1 overflow-y-auto bg-surface-container-lowest p-container-padding">
+<div class="max-w-4xl mx-auto space-y-8">
+<!-- Section Header -->
+<div>
+<h2 class="font-section-header text-app-title text-text-primary mb-1">Preferences</h2>
+<p class="font-body text-body text-text-muted">Configure your hardware acceleration and file management.</p>
+</div>
+<!-- Bento Grid Layout for Settings -->
+<div class="grid grid-cols-12 gap-4">
+<!-- Display & Appearance -->
+<section class="col-span-12 md:col-span-7 bg-surface-container-low border border-border p-4 rounded-lg">
+<div class="flex items-center gap-2 mb-4">
+<span class="material-symbols-outlined text-primary" data-icon="visibility">visibility</span>
+<h3 class="font-section-header text-section-header text-text-primary">Appearance</h3>
+</div>
+<div class="space-y-4">
+<div class="flex items-center justify-between p-3 bg-surface-container-lowest border border-border rounded">
+<div>
+<p class="font-body text-body text-text-primary">Dark Mode</p>
+<p class="font-metadata text-metadata text-text-muted">Reduce eye strain in low-light environments.</p>
+</div>
+<button class="relative inline-flex h-5 w-10 shrink-0 cursor-pointer items-center rounded-full bg-primary transition-colors focus:outline-none ring-1 ring-border-focus ring-offset-2 ring-offset-background">
+<span class="translate-x-5 inline-block h-3.5 w-3.5 transform rounded-full bg-on-primary shadow ring-0 transition duration-200 ease-in-out"></span>
+</button>
+</div>
+<div class="flex items-center justify-between p-3 bg-surface-container-lowest border border-border rounded">
+<div>
+<p class="font-body text-body text-text-primary">High Contrast Borders</p>
+<p class="font-metadata text-metadata text-text-muted">Enhance structural division visibility.</p>
+</div>
+<button class="relative inline-flex h-5 w-10 shrink-0 cursor-pointer items-center rounded-full bg-bg-elevated border border-border transition-colors focus:outline-none">
+<span class="translate-x-1 inline-block h-3.5 w-3.5 transform rounded-full bg-text-muted transition duration-200 ease-in-out"></span>
+</button>
+</div>
+</div>
+</section>
+<!-- Hardware Stats (Visual Card) -->
+<section class="col-span-12 md:col-span-5 bg-bg-elevated border border-border p-4 rounded-lg flex flex-col justify-between">
+<div>
+<div class="flex items-center gap-2 mb-2">
+<span class="material-symbols-outlined text-secondary" data-icon="memory">memory</span>
+<h3 class="font-section-header text-section-header text-text-primary">Hardware Pulse</h3>
+</div>
+<div class="w-full h-24 bg-surface-container-lowest/50 rounded flex items-end gap-1 px-2 pb-2 relative overflow-hidden">
+<div class="w-2 bg-secondary h-[40%]"></div>
+<div class="w-2 bg-secondary h-[60%]"></div>
+<div class="w-2 bg-secondary h-[55%]"></div>
+<div class="w-2 bg-secondary h-[80%]"></div>
+<div class="w-2 bg-secondary h-[70%]"></div>
+<div class="w-2 bg-secondary h-[90%]"></div>
+<div class="w-2 bg-secondary h-[45%]"></div>
+<div class="w-2 bg-secondary h-[30%]"></div>
+<div class="w-2 bg-secondary h-[50%]"></div>
+<div class="absolute inset-0 bg-gradient-to-t from-bg-elevated via-transparent to-transparent pointer-events-none"></div>
+</div>
+</div>
+<div class="mt-4">
+<p class="font-code text-code text-secondary">NVIDIA RTX 4090 ACTIVE</p>
+<p class="font-metadata text-metadata text-text-muted">Temp: 54°C | Load: 12%</p>
+</div>
+</section>
+<!-- System Performance -->
+<section class="col-span-12 bg-surface-container-low border border-border p-4 rounded-lg">
+<div class="flex items-center gap-2 mb-4">
+<span class="material-symbols-outlined text-tertiary" data-icon="bolt">bolt</span>
+<h3 class="font-section-header text-section-header text-text-primary">System &amp; GPU</h3>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<div class="p-3 bg-surface-container-lowest border border-border rounded flex items-center justify-between">
+<div class="flex gap-3 items-center">
+<span class="material-symbols-outlined text-text-secondary" data-icon="rocket_launch">rocket_launch</span>
+<div>
+<p class="font-body text-body text-text-primary">GPU Acceleration</p>
+<p class="font-metadata text-metadata text-text-muted">Use CUDA cores for rendering.</p>
+</div>
+</div>
+<button class="relative inline-flex h-5 w-10 shrink-0 cursor-pointer items-center rounded-full bg-primary transition-colors focus:outline-none">
+<span class="translate-x-5 inline-block h-3.5 w-3.5 transform rounded-full bg-on-primary transition duration-200 ease-in-out"></span>
+</button>
+</div>
+<div class="p-3 bg-surface-container-lowest border border-border rounded flex items-center justify-between">
+<div class="flex gap-3 items-center">
+<span class="material-symbols-outlined text-text-secondary" data-icon="database">database</span>
+<div>
+<p class="font-body text-body text-text-primary">Memory Limit</p>
+<p class="font-metadata text-metadata text-text-muted">Cap system RAM usage.</p>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<input class="w-16 h-7 bg-bg-elevated border border-border text-center font-code text-code text-text-primary focus:border-border-focus outline-none rounded" type="text" value="16GB"/>
+</div>
+</div>
+</div>
+</section>
+<!-- Path Picker / File Management -->
+<section class="col-span-12 bg-surface-container-low border border-border p-4 rounded-lg">
+<div class="flex items-center gap-2 mb-4">
+<span class="material-symbols-outlined text-primary" data-icon="folder_open">folder_open</span>
+<h3 class="font-section-header text-section-header text-text-primary">Storage Architecture</h3>
+</div>
+<div class="space-y-4">
+<div class="group">
+<label class="font-metadata text-metadata text-text-muted block mb-1.5 px-1 uppercase tracking-wider">Default Output Directory</label>
+<div class="flex gap-2">
+<div class="flex-1 bg-surface-container-lowest border border-border px-3 py-2 rounded flex items-center group-focus-within:border-border-focus transition-colors">
+<span class="font-code text-code text-text-secondary overflow-hidden text-ellipsis whitespace-nowrap">C:/Users/Kore/Workspace/Exports/0x451A/results</span>
+</div>
+<button class="bg-bg-elevated border border-border text-text-primary px-4 py-2 hover:bg-bg-hover transition-all active:scale-95 flex items-center gap-2 rounded">
+<span class="material-symbols-outlined" data-icon="browse_gallery">browse_gallery</span>
+<span class="font-body text-body">Browse</span>
+</button>
+</div>
+</div>
+<div class="bg-surface-container-lowest/30 border border-dashed border-border p-6 rounded-lg flex flex-col items-center justify-center text-center group hover:border-primary transition-colors cursor-pointer">
+<span class="material-symbols-outlined text-text-muted group-hover:text-primary transition-colors mb-2" data-icon="upload_file" style="font-size: 32px;">upload_file</span>
+<p class="font-body text-body text-text-primary">Import Configuration Bundle</p>
+<p class="font-metadata text-metadata text-text-muted">Drag and drop .json or .kore settings files here</p>
+</div>
+</div>
+</section>
+<!-- Action Buttons -->
+<div class="col-span-12 flex justify-end gap-3 pt-4 pb-8">
+<button class="px-6 py-2 border border-border text-text-primary font-body text-body rounded hover:bg-bg-hover transition-all active:scale-95">
+                            Reset to Defaults
+                        </button>
+<button class="px-6 py-2 bg-primary text-on-primary font-body text-body rounded font-bold transition-all active:scale-95">
+                            Apply Changes
+                        </button>
+</div>
+</div>
+</div>
+</main>
+</div>
+<!-- Footer -->
+<footer class="bg-surface-container-lowest border-t border-border flex items-center justify-between px-3 w-full h-[24px] z-50">
+<div class="flex items-center gap-4">
+<span class="font-metadata text-metadata opacity-50 text-text-muted">Kore v1.0.4 | GPU: NVIDIA RTX | System Ready</span>
+<div class="flex items-center gap-1">
+<div class="w-1.5 h-1.5 rounded-full bg-secondary"></div>
+<span class="font-metadata text-metadata text-text-muted">Syncing...</span>
+</div>
+</div>
+<div class="flex gap-4">
+<a class="font-metadata text-metadata text-text-muted hover:text-text-primary transition-colors" href="#">Documentation</a>
+<a class="font-metadata text-metadata text-text-muted hover:text-text-primary transition-colors" href="#">Support</a>
+</div>
+</footer>
+</body></html>
