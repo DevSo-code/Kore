@@ -32,6 +32,8 @@ from src.constants import (
     CARD_CORNER_RADIUS,
 )
 from src.core.image_processor import ImageProcessor
+from src.db.repository import DatabaseRepository
+from src.models.settings import ProcessingOperation, ProcessingQueue, ProcessingStatus
 
 logger = logging.getLogger(__name__)
 
@@ -49,6 +51,7 @@ class ImageTab(ctk.CTkFrame):
         super().__init__(parent, fg_color="transparent")
         self.app = app
         self.image_processor = ImageProcessor(use_gpu=True)
+        self.db = DatabaseRepository()
         self.current_image_path: Path | None = None
         self.processed_image_path: Path | None = None
 
@@ -322,7 +325,7 @@ class ImageTab(ctk.CTkFrame):
             self._load_image(Path(file_path))
 
     def _load_image(self, image_path: Path) -> None:
-        """Load and display an image.
+        """Load and display an image with thumbnail optimization.
 
         Args:
             image_path: Path to the image file.
@@ -330,18 +333,23 @@ class ImageTab(ctk.CTkFrame):
         try:
             self.current_image_path = image_path
             
-            # Load image
-            image = Image.open(image_path)
-            self.original_image = image.copy()
+            # Load full image for processing
+            self.original_image = Image.open(image_path)
             
-            # Resize for preview
+            # CREATE THUMBNAIL for preview (50KB instead of 5MB)
             canvas_width = self.preview_canvas.winfo_width()
             canvas_height = self.preview_canvas.winfo_height()
             if canvas_width < 10: canvas_width = 600
             if canvas_height < 10: canvas_height = 400
             
-            image.thumbnail((canvas_width, canvas_height))
-            self.preview_image = ImageTk.PhotoImage(image)
+            thumb = self.original_image.copy()
+            thumb.thumbnail((canvas_width, canvas_height))
+            self.preview_image = ImageTk.PhotoImage(thumb)
+            
+            # Cache the thumbnail
+            from src.constants import CACHE_DIR
+            thumb_path = CACHE_DIR / f"{image_path.stem}_thumb.png"
+            thumb.save(thumb_path, quality=85, optimize=True)
 
             # Show preview
             self.preview_canvas.delete("all")
@@ -378,6 +386,15 @@ class ImageTab(ctk.CTkFrame):
         from src.constants import CACHE_DIR
         output_path = CACHE_DIR / f"{self.current_image_path.stem}_processed.png"
 
+        # Create queue entry BEFORE processing
+        job = ProcessingQueue(
+            input_path=str(self.current_image_path),
+            output_path=str(output_path),
+            operation=ProcessingOperation.BG_REMOVAL,
+            status=ProcessingStatus.PENDING,
+        )
+        job_id = self.db.add_processing_queue(job)
+
         def progress_callback(progress: float) -> None:
             """Update progress during processing."""
             self.progress_bar.set(progress)
@@ -390,6 +407,9 @@ class ImageTab(ctk.CTkFrame):
             self.save_button.configure(state="normal")
             self.app.set_status(f"Processing complete.")
 
+            # Update job status to DONE
+            self.db.update_processing_status(job_id, ProcessingStatus.DONE)
+
             # Load and show comparison
             self._show_comparison(result)
 
@@ -399,6 +419,14 @@ class ImageTab(ctk.CTkFrame):
             self.progress_bar.set(0)
             self.process_button.configure(state="normal")
             self.app.show_toast(f"Background removal failed: {error}", is_error=True)
+
+            # Update job status to ERROR
+            self.db.update_processing_status(
+                job_id, ProcessingStatus.ERROR, error_message=str(error)
+            )
+
+        # Update job status to PROCESSING
+        self.db.update_processing_status(job_id, ProcessingStatus.PROCESSING)
 
         # Start async processing
         self.image_processor.remove_background_async(

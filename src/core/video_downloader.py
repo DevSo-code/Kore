@@ -8,12 +8,14 @@ from __future__ import annotations
 
 import logging
 import threading
+import time
 from pathlib import Path
 from typing import Any, Callable
 
 import yt_dlp
 
 from src.constants import OUTPUT_DIR
+from src.utils.decorators import retry_on_failure
 
 logger = logging.getLogger(__name__)
 
@@ -29,9 +31,15 @@ class VideoDownloader:
         """
         self.output_dir = Path(output_dir)
         self.output_dir.mkdir(parents=True, exist_ok=True)
+        
+        # Initialize cache for video info
+        self._info_cache: dict[str, dict[str, Any]] = {}
+        self._cache_timestamp: dict[str, float] = {}
+        self._cache_ttl: int = 600  # 10 minutes TTL
 
+    @retry_on_failure(max_retries=3, delay=2.0)
     def get_video_info(self, url: str) -> dict[str, Any]:
-        """Get video information from URL.
+        """Get video information from URL with caching.
 
         Args:
             url: Video URL.
@@ -42,23 +50,35 @@ class VideoDownloader:
         Raises:
             Exception: If info retrieval fails.
         """
-        try:
-            ydl_opts = {
-                "quiet": True,
-                "no_warnings": True,
+        # Check cache first
+        if url in self._cache_timestamp:
+            if time.time() - self._cache_timestamp[url] < self._cache_ttl:
+                logger.info(f"Returning cached video info for {url}")
+                return self._info_cache[url]
+            else:
+                # Cache expired
+                del self._info_cache[url]
+                del self._cache_timestamp[url]
+
+        ydl_opts = {
+            "quiet": True,
+            "no_warnings": True,
+        }
+
+        with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+            info = ydl.extract_info(url, download=False)
+            result = {
+                "title": info.get("title"),
+                "duration": info.get("duration"),
+                "thumbnail": info.get("thumbnail"),
+                "formats": self._parse_formats(info.get("formats", [])),
             }
 
-            with yt_dlp.YoutubeDL(ydl_opts) as ydl:
-                info = ydl.extract_info(url, download=False)
-                return {
-                    "title": info.get("title"),
-                    "duration": info.get("duration"),
-                    "thumbnail": info.get("thumbnail"),
-                    "formats": self._parse_formats(info.get("formats", [])),
-                }
-        except Exception as e:
-            logger.error(f"Failed to get video info: {e}")
-            raise
+            # Cache the result
+            self._info_cache[url] = result
+            self._cache_timestamp[url] = time.time()
+
+            return result
 
     def _parse_formats(self, formats: list[dict[str, Any]]) -> list[dict[str, Any]]:
         """Parse and filter video formats.

@@ -7,6 +7,7 @@ and async execution support.
 from __future__ import annotations
 
 import logging
+import os
 import threading
 from pathlib import Path
 from typing import Callable
@@ -31,7 +32,30 @@ class ImageProcessor:
         """
         self.use_gpu = use_gpu and self._check_gpu_available()
         self.session = None
-        self._initialize_session()
+        self._session_initialized = False
+        self._initialize_model_cache()
+
+    @staticmethod
+    def _initialize_model_cache() -> Path:
+        """Create and manage model cache directory.
+
+        Returns:
+            Path to the model cache directory.
+        """
+        model_cache = CACHE_DIR / "models"
+        model_cache.mkdir(parents=True, exist_ok=True)
+
+        # Set environment variable for rembg to use cached models
+        os.environ["U2NET_HOME"] = str(model_cache)
+
+        logger.info(f"Model cache directory: {model_cache}")
+        return model_cache
+
+    def _ensure_session_initialized(self) -> None:
+        """Ensure the rembg session is initialized (lazy initialization)."""
+        if not self._session_initialized:
+            self._initialize_session()
+            self._session_initialized = True
 
     def _check_gpu_available(self) -> bool:
         """Check if GPU acceleration is available.
@@ -98,6 +122,9 @@ class ImageProcessor:
         Raises:
             Exception: If processing fails.
         """
+        # Lazy initialization - only load model when actually processing
+        self._ensure_session_initialized()
+
         input_path = Path(input_path)
         output_path = Path(output_path)
 

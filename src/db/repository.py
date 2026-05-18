@@ -6,11 +6,16 @@ and data access for settings, download history, and processing queue.
 
 from __future__ import annotations
 
+import logging
+import queue
 import sqlite3
 import threading
+import time
 from contextlib import contextmanager
 from datetime import datetime
 from pathlib import Path
+
+logger = logging.getLogger(__name__)
 
 from src.constants import (
     DB_PATH,
@@ -28,6 +33,7 @@ from src.models.settings import (
     DownloadStatus,
     ProcessingQueue,
     ProcessingStatus,
+    Tab,
 )
 
 
@@ -50,15 +56,28 @@ class DatabaseRepository:
         """Initialize database connection and create schema."""
         self.db_path = DB_PATH
         self._ensure_database_exists()
+        
+        # Initialize connection pool (3 connections) BEFORE creating schema
+        self._conn_pool: queue.Queue[sqlite3.Connection] = queue.Queue(maxsize=5)
+        for _ in range(3):
+            conn = sqlite3.connect(self.db_path, check_same_thread=False)
+            conn.row_factory = sqlite3.Row
+            conn.execute("PRAGMA journal_mode=WAL")
+            self._conn_pool.put(conn)
+        
+        # Now create schema using pooled connections
         self._create_schema()
         self._seed_default_settings()
+        
+        # Initialize cache for download history
+        self._history_cache: dict[str, list[DownloadHistory]] = {}
+        self._cache_timestamp: dict[str, float] = {}
+        self._cache_ttl: int = 300  # 5 minutes TTL
 
     @contextmanager
     def _get_connection(self):
-        """Get a database connection with context manager."""
-        conn = sqlite3.connect(self.db_path)
-        conn.row_factory = sqlite3.Row
-        conn.execute("PRAGMA journal_mode=WAL")
+        """Get a database connection from pool with context manager."""
+        conn = self._conn_pool.get(timeout=5)
         try:
             yield conn
             conn.commit()
@@ -66,7 +85,7 @@ class DatabaseRepository:
             conn.rollback()
             raise
         finally:
-            conn.close()
+            self._conn_pool.put(conn)
 
     def _ensure_database_exists(self) -> None:
         """Ensure database file and parent directory exist."""
@@ -116,6 +135,21 @@ class DatabaseRepository:
                     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                     completed_at TIMESTAMP
                 )
+                """
+            )
+
+            # Create indexes for performance
+            conn.execute(
+                f"""
+                CREATE INDEX IF NOT EXISTS idx_download_history_created_at
+                ON {TABLE_DOWNLOAD_HISTORY}(created_at DESC)
+                """
+            )
+
+            conn.execute(
+                f"""
+                CREATE INDEX IF NOT EXISTS idx_processing_queue_status
+                ON {TABLE_PROCESSING_QUEUE}(status)
                 """
             )
 
@@ -183,6 +217,13 @@ class DatabaseRepository:
         gpu = self.get_setting("gpu_acceleration") or str(DEFAULT_GPU_ACCELERATION).lower()
         last_tab = self.get_setting("last_active_tab") or DEFAULT_LAST_ACTIVE_TAB
 
+        # Validate last_active_tab against enum, fallback to default if invalid
+        try:
+            Tab(last_tab)
+        except ValueError:
+            logger.warning(f"Invalid last_active_tab value: {last_tab}, using default")
+            last_tab = DEFAULT_LAST_ACTIVE_TAB
+
         return AppSettings(
             theme=theme,
             default_output_dir=output_dir,
@@ -229,26 +270,41 @@ class DatabaseRepository:
             )
             return cursor.lastrowid
 
-    def get_download_history(self, limit: int = 50) -> list[DownloadHistory]:
-        """Get recent download history.
+    def get_download_history(self, limit: int = 50, page: int = 0) -> list[DownloadHistory]:
+        """Get recent download history with pagination and caching.
 
         Args:
             limit: Maximum number of records to return.
+            page: Page number (0-indexed).
 
         Returns:
             List of DownloadHistory models.
         """
+        cache_key = f"history_{limit}_{page}"
+        
+        # Invalidate cache after TTL
+        if cache_key in self._cache_timestamp:
+            if time.time() - self._cache_timestamp[cache_key] > self._cache_ttl:
+                del self._history_cache[cache_key]
+                del self._cache_timestamp[cache_key]
+        
+        # Return cached data if available
+        if cache_key in self._history_cache:
+            return self._history_cache[cache_key]
+        
+        # Fetch from database
+        offset = page * limit
         with self._get_connection() as conn:
             cursor = conn.execute(
                 f"""
                 SELECT * FROM {TABLE_DOWNLOAD_HISTORY}
                 ORDER BY created_at DESC
-                LIMIT ?
+                LIMIT ? OFFSET ?
                 """,
-                (limit,),
+                (limit, offset),
             )
             rows = cursor.fetchall()
-            return [
+            results = [
                 DownloadHistory(
                     id=row["id"],
                     url=row["url"],
@@ -262,6 +318,12 @@ class DatabaseRepository:
                 )
                 for row in rows
             ]
+            
+            # Cache the results
+            self._history_cache[cache_key] = results
+            self._cache_timestamp[cache_key] = time.time()
+            
+            return results
 
     def add_processing_queue(self, entry: ProcessingQueue) -> int:
         """Add a processing queue entry.
