@@ -54,8 +54,13 @@ class App(ctk.CTk):
         """Initialize the application."""
         super().__init__()
 
-        # Setup theme
-        setup_dark_theme()
+        # Load settings first
+        self.db = DatabaseRepository()
+        self.settings = self.db.get_app_settings()
+
+        # Setup theme based on saved settings
+        ctk.set_appearance_mode(self.settings.theme.value)
+        ctk.set_default_color_theme("dark-blue")
 
         # Window configuration
         self.title(f"{APP_NAME} v{APP_VERSION}")
@@ -63,9 +68,16 @@ class App(ctk.CTk):
         self.minsize(MIN_WINDOW_WIDTH, MIN_WINDOW_HEIGHT)
         self.configure(fg_color=COLOR_BG_BASE)
 
-        # Load settings
-        self.db = DatabaseRepository()
-        self.settings = self.db.get_app_settings()
+        # Set window icon photo
+        logo_path = Path(__file__).parent / "assets" / "logo.png"
+        if logo_path.exists():
+            try:
+                from PIL import Image, ImageTk
+                pil_icon = Image.open(logo_path)
+                self.icon_photo = ImageTk.PhotoImage(pil_icon)
+                self.iconphoto(False, self.icon_photo)
+            except Exception as e:
+                logger.error(f"Failed to set window icon: {e}")
 
         # Build UI
         self._build_ui()
@@ -101,23 +113,46 @@ class App(ctk.CTk):
         self.sidebar_header = ctk.CTkFrame(self.sidebar, fg_color="transparent")
         self.sidebar_header.pack(fill="x", padx=20, pady=(30, 40))
 
+        # Title & logo container
+        self.title_container = ctk.CTkFrame(self.sidebar_header, fg_color="transparent")
+        self.title_container.pack(fill="x")
+
+        # Load and display logo in sidebar
+        logo_path = Path(__file__).parent / "assets" / "logo.png"
+        if logo_path.exists():
+            try:
+                from PIL import Image
+                pil_logo = Image.open(logo_path)
+                self.logo_image = ctk.CTkImage(
+                    light_image=pil_logo,
+                    dark_image=pil_logo,
+                    size=(36, 36)
+                )
+                self.logo_label = ctk.CTkLabel(self.title_container, image=self.logo_image, text="")
+                self.logo_label.pack(side="left", padx=(0, 10))
+            except Exception as e:
+                logger.error(f"Failed to load sidebar logo: {e}")
+
+        self.sidebar_title_frame = ctk.CTkFrame(self.title_container, fg_color="transparent")
+        self.sidebar_title_frame.pack(side="left", fill="y")
+
         self.sidebar_title = ctk.CTkLabel(
-            self.sidebar_header,
+            self.sidebar_title_frame,
             text=APP_NAME,
             font=("Inter", 24, "bold"),
             text_color=COLOR_ACCENT_PRIMARY,
             anchor="w",
         )
-        self.sidebar_title.pack(fill="x")
+        self.sidebar_title.pack(anchor="w")
 
         self.sidebar_subtitle = ctk.CTkLabel(
-            self.sidebar_header,
+            self.sidebar_title_frame,
             text="Utility Suite",
             font=("Inter", 11),
             text_color=COLOR_TEXT_MUTED,
             anchor="w",
         )
-        self.sidebar_subtitle.pack(fill="x")
+        self.sidebar_subtitle.pack(anchor="w")
 
         # Navigation buttons container
         self.nav_frame = ctk.CTkFrame(self.sidebar, fg_color="transparent")

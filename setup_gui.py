@@ -119,6 +119,21 @@ class InstallerGUI:
         self.venv_dir = self.repo_dir / "venv"
         self.is_windows = platform.system() == "Windows"
         
+        # Set installer window icon
+        logo_path = self.repo_dir / "src" / "ui" / "assets" / "logo.png"
+        if logo_path.exists():
+            try:
+                try:
+                    from PIL import Image, ImageTk
+                    pil_icon = Image.open(logo_path)
+                    pil_icon = pil_icon.resize((32, 32), Image.Resampling.LANCZOS)
+                    self.icon_photo = ImageTk.PhotoImage(pil_icon)
+                except ImportError:
+                    self.icon_photo = tk.PhotoImage(file=str(logo_path))
+                self.root.iconphoto(False, self.icon_photo)
+            except Exception as e:
+                print(f"Failed to set window icon: {e}")
+        
         self.current_step_index = 0
         self.steps = [
             "Verify System Environment",
@@ -155,9 +170,15 @@ class InstallerGUI:
         self.logo_img = None
         if logo_path.exists():
             try:
-                raw_img = tk.PhotoImage(file=str(logo_path))
-                # Subsample down to about 96x96 or 128x128
-                self.logo_img = raw_img.subsample(8, 8)
+                try:
+                    from PIL import Image, ImageTk
+                    pil_logo = Image.open(logo_path)
+                    pil_logo = pil_logo.resize((96, 96), Image.Resampling.LANCZOS)
+                    self.logo_img = ImageTk.PhotoImage(pil_logo)
+                except ImportError:
+                    raw_img = tk.PhotoImage(file=str(logo_path))
+                    self.logo_img = raw_img.subsample(8, 8)
+                
                 self.logo_label = tk.Label(sidebar, image=self.logo_img, bg=BG_SURFACE_LOWEST)
                 self.logo_label.pack(pady=(35, 10))
             except Exception as e:

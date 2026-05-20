@@ -12,6 +12,7 @@ from tkinter import filedialog
 
 import customtkinter as ctk
 from PIL import Image, ImageTk
+from src.ui.theme import resolve_color
 
 from src.constants import (
     COLOR_ACCENT_PRIMARY,
@@ -287,7 +288,7 @@ class ImageTab(ctk.CTkFrame):
 
         self.preview_canvas = tk.Canvas(
             self.preview_area,
-            bg=COLOR_SURFACE_CONTAINER_LOWEST,
+            bg=resolve_color(COLOR_SURFACE_CONTAINER_LOWEST),
             highlightthickness=0,
         )
         self.preview_canvas.pack(fill="both", expand=True)
@@ -296,7 +297,7 @@ class ImageTab(ctk.CTkFrame):
         self.preview_canvas.create_text(
             300, 200,
             text="Upload an image to start processing",
-            fill=COLOR_TEXT_MUTED,
+            fill=resolve_color(COLOR_TEXT_MUTED),
             font=("Inter", 12),
             tags="placeholder"
         )
@@ -461,7 +462,7 @@ class ImageTab(ctk.CTkFrame):
             
             # Add label
             self.preview_canvas.create_text(
-                10, 10, text="PROCESSED", fill=COLOR_ACCENT_PRIMARY, anchor="nw", font=("Inter", 10, "bold")
+                10, 10, text="PROCESSED", fill=resolve_color(COLOR_ACCENT_PRIMARY), anchor="nw", font=("Inter", 10, "bold")
             )
 
         except Exception as e:
@@ -497,7 +498,7 @@ class ImageTab(ctk.CTkFrame):
         self.preview_canvas.create_text(
             300, 200,
             text="Upload an image to start processing",
-            fill=COLOR_TEXT_MUTED,
+            fill=resolve_color(COLOR_TEXT_MUTED),
             font=("Inter", 12),
             tags="placeholder"
         )

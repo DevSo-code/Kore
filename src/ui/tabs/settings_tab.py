@@ -243,6 +243,10 @@ class SettingsTab(ctk.CTkFrame):
 
         try:
             self.db.save_app_settings(self.settings)
+            
+            # Apply theme dynamically in real-time
+            ctk.set_appearance_mode(self.settings.theme.value)
+            
             self.app.set_status("Settings saved")
             self.app.show_toast("Settings saved successfully")
         except Exception as e:

@@ -35,6 +35,14 @@ def setup_dark_theme() -> None:
     ctk.set_default_color_theme("dark-blue")
 
 
+def resolve_color(color: str | tuple[str, str]) -> str:
+    """Resolve a color token (string or tuple) to a hex string for the current appearance mode."""
+    if isinstance(color, tuple):
+        mode = ctk.get_appearance_mode().lower()
+        return color[0] if mode == "light" else color[1]
+    return color
+
+
 def get_color(color_name: str) -> str:
     """Get a color token by name.
 
@@ -64,4 +72,5 @@ def get_color(color_name: str) -> str:
         "text_secondary": COLOR_TEXT_SECONDARY,
         "text_muted": COLOR_TEXT_MUTED,
     }
-    return color_map.get(color_name, COLOR_TEXT_PRIMARY)
+    raw_color = color_map.get(color_name, COLOR_TEXT_PRIMARY)
+    return resolve_color(raw_color)
