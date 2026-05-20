@@ -25,53 +25,36 @@ Kore is a local-first, offline-capable desktop utility suite built in Python. It
 - GPU acceleration toggle
 - Theme selection (dark/light)
 
-## Installation
+## Installation (Interactive Installer)
 
-### Prerequisites
-- Python 3.11 or higher (tested on 3.14)
-- pip package manager
-- tkinter (system package)
+Kore comes with a fully automated, dark-themed visual installer that handles virtual environment setup, python package installation, AI model caching (`u2net.onnx`), local database seeding, and desktop launcher shortcut creation.
 
-#### System Dependencies
+### Windows
 
-**Arch Linux / CachyOS:**
-```bash
-sudo pacman -S tk
-```
+1. Clone the repository and navigate to the directory.
+2. Double-click or run `install.bat` in your terminal:
+   ```cmd
+   install.bat
+   ```
+   *If Python is not installed, the script will automatically download and set it up for you.*
 
-**Ubuntu/Debian:**
-```bash
-sudo apt install python3-tk
-```
+### Linux (Ubuntu, Debian, Fedora, Arch, CachyOS, etc.)
 
-**Fedora:**
-```bash
-sudo dnf install python3-tkinter
-```
+1. Clone the repository and navigate to the directory.
+2. Run the launcher script:
+   ```bash
+   chmod +x install.sh
+   ./install.sh
+   ```
+   *The launcher will detect your system package manager (apt, dnf, pacman, etc.) and automatically install dependencies like `tkinter` and `venv` before launching the visual wizard.*
 
-### Setup
+## Running the Application
+Once installed, you can launch the application:
+- via the **Desktop Shortcut** or **Application Launcher** created during setup.
+- or by running:
+  - **Windows**: `venv\Scripts\python.exe src\main.py`
+  - **Linux**: `venv/bin/python src/main.py`
 
-1. Clone the repository:
-```bash
-git clone https://github.com/yourusername/kore.git
-cd kore
-```
-
-2. Create a virtual environment:
-```bash
-python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
-```
-
-3. Install dependencies:
-```bash
-pip install -r requirements.txt
-```
-
-4. Run the application:
-```bash
-python src/main.py
-```
 
 ## Building for Distribution
 
