@@ -9,6 +9,7 @@ tkinterdnd2>=0.3.0
 # Core Processing
 rembg[cpu]>=2.0.75
 yt-dlp>=2024.3.10
+spotdl>=4.4.0
 
 # Data & Configuration
 pydantic>=2.9.0

@@ -1,16 +1,17 @@
 # ROADMAP.md — Build Phases
 
 ## Phase 1: MVP (Days 1–2)
-**Goal**: A working, installable app with 2 core tools.
+**Goal**: A working, installable app with 3 core tools.
 
-- [ ] Project scaffold with CustomTkinter shell and tab router
-- [ ] Image Studio: drag-drop → rembg → save PNG (CPU path)
-- [ ] Video Grab: URL input → yt-dlp → resolution picker → download
-- [ ] SQLite settings persistence (theme, output folder)
+- [x] Project scaffold with CustomTkinter shell and tab router
+- [x] Image Studio: drag-drop → rembg → save PNG (CPU path)
+- [x] Video Grab: URL input → yt-dlp → resolution picker → download
+- [x] Spotify Downloader: URL input → spotdl → format picker → download
+- [x] SQLite settings persistence (theme, output folder)
 - [ ] PyInstaller spec for Windows `.exe` (smoke test build)
-- [ ] Dark theme applied to all components
+- [x] Dark theme applied to all components
 
-**Success Criteria**: A teammate can install the `.exe` or run the Python source and process one image + one video without crashes.
+**Success Criteria**: A teammate can install the `.exe` or run the Python source and process one image + one video + one Spotify track without crashes.
 
 ---
 

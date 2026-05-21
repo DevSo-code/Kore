@@ -11,7 +11,7 @@ from platformdirs import PlatformDirs
 
 # Application metadata
 APP_NAME = "Kore"
-APP_VERSION = "1.0.0"
+APP_VERSION = "2.0.0"
 APP_AUTHOR = "KoreTeam"
 
 # Platform-specific directories

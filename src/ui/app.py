@@ -226,6 +226,7 @@ class App(ctk.CTk):
         nav_items = [
             (Tab.IMAGE, "Image", "🖼"),
             (Tab.VIDEO, "Video", "📹"),
+            (Tab.SPOTIFY, "Spotify", "🎵"),
             (Tab.SETTINGS, "Settings", "⚙"),
         ]
 
@@ -309,6 +310,12 @@ class App(ctk.CTk):
 
             video_tab = VideoTab(self.tab_frames[tab], self)
             video_tab.pack(fill="both", expand=True)
+
+        elif tab == Tab.SPOTIFY:
+            from src.ui.tabs.spotify_tab import SpotifyTab
+
+            spotify_tab = SpotifyTab(self.tab_frames[tab], self)
+            spotify_tab.pack(fill="both", expand=True)
 
         elif tab == Tab.SETTINGS:
             from src.ui.tabs.settings_tab import SettingsTab

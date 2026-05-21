@@ -19,6 +19,13 @@ Kore is a local-first, offline-capable desktop utility suite built in Python. It
 - Real-time progress display with speed and ETA
 - Automatic format conversion to MP4
 
+### Spotify Downloader
+- Download Spotify tracks and playlists using `spotdl`
+- Multiple audio formats (MP3, M4A, OPUS)
+- YouTube audio provider for better coverage
+- Real-time download progress
+- Download history tracking
+
 ### Settings
 - Persistent configuration via SQLite
 - Customizable output directory
@@ -110,6 +117,8 @@ kore/
 - **GUI Framework**: CustomTkinter
 - **Image Processing**: rembg (ONNX Runtime)
 - **Video Download**: yt-dlp
+- **Spotify Download**: spotdl
+- **Audio Processing**: FFmpeg
 - **Database**: SQLite
 - **Configuration**: Pydantic
 - **Language**: Python 3.11+

@@ -19,6 +19,8 @@
 |--------|---------|---------|
 | Image BG Removal | `rembg[gpu]` | ONNX Runtime inference for background removal |
 | Video Download | `yt-dlp` | Media extraction, metadata, format selection |
+| Spotify Download | `spotdl` | Spotify track/playlist download via YouTube |
+| Audio Processing | `ffmpeg` | Audio encoding, format conversion |
 | Image I/O | `Pillow` | Preview generation, format conversion, thumbnail |
 | Async Tasks | `asyncio` + `threading` | Keep UI responsive during heavy inference/download |
 

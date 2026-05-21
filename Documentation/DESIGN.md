@@ -59,12 +59,13 @@
 │              │                                       │
 │  [🖼 Image]  │           TAB CONTENT AREA            │
 │  [📹 Video]  │                                       │
+│  [🎵 Spotify]│                                       │
 │  [⚙ Settings]│                                       │
 │              │                                       │
 │   (sidebar   │                                       │
 │   nav)       │                                       │
 ├──────────────┴──────────────────────────────────────┤
-│  Status bar: Ready  │  GPU: Off  │  v1.0.0           │
+│  Status bar: Ready  │  GPU: Off  │  v2.0.0           │
 └─────────────────────────────────────────────────────┘
 ```
 

@@ -25,7 +25,7 @@ from src.constants import (
     COLOR_TEXT_SECONDARY,
 )
 from src.db.repository import DatabaseRepository
-from src.models.settings import AppSettings
+from src.models.settings import AppSettings, Theme
 
 logger = logging.getLogger(__name__)
 
@@ -202,7 +202,7 @@ class SettingsTab(ctk.CTkFrame):
             dropdown_hover_color=COLOR_BG_HOVER,
         )
         self.theme_menu.pack(side="right")
-        self.theme_menu.set(self.settings.theme.value.capitalize())
+        self.theme_menu.set(self.settings.theme.capitalize())
 
         # Save Button
         self.save_settings_button = ctk.CTkButton(
@@ -233,20 +233,22 @@ class SettingsTab(ctk.CTkFrame):
         Args:
             choice: Selected theme.
         """
-        self.settings.theme = choice.lower()
+        self.settings.theme = Theme(choice.lower())
 
     def _save_settings(self) -> None:
         """Save all settings."""
         self.settings.default_output_dir = self.output_dir_entry.get()
         self.settings.gpu_acceleration = self.gpu_switch.get()
-        self.settings.theme = self.theme_menu.get().lower()
+        # Convert string to Theme enum
+        theme_str = self.theme_menu.get().lower()
+        self.settings.theme = Theme(theme_str)
 
         try:
             self.db.save_app_settings(self.settings)
-            
+
             # Apply theme dynamically in real-time
-            ctk.set_appearance_mode(self.settings.theme.value)
-            
+            ctk.set_appearance_mode(self.settings.theme)
+
             self.app.set_status("Settings saved")
             self.app.show_toast("Settings saved successfully")
         except Exception as e:
