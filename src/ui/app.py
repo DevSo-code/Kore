@@ -227,6 +227,7 @@ class App(ctk.CTk):
             (Tab.IMAGE, "Image", "🖼"),
             (Tab.VIDEO, "Video", "📹"),
             (Tab.SPOTIFY, "Spotify", "🎵"),
+            (Tab.REALESRGAN, "Upscale", "✨"),
             (Tab.SETTINGS, "Settings", "⚙"),
         ]
 
@@ -316,6 +317,12 @@ class App(ctk.CTk):
 
             spotify_tab = SpotifyTab(self.tab_frames[tab], self)
             spotify_tab.pack(fill="both", expand=True)
+
+        elif tab == Tab.REALESRGAN:
+            from src.ui.tabs.realesrgan_tab import RealESRGANTab
+
+            realesrgan_tab = RealESRGANTab(self.tab_frames[tab], self)
+            realesrgan_tab.pack(fill="both", expand=True)
 
         elif tab == Tab.SETTINGS:
             from src.ui.tabs.settings_tab import SettingsTab

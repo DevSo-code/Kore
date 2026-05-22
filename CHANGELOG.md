@@ -1,5 +1,40 @@
 # Changelog
 
+## [2.1.0] - 2026-05-22
+
+### Added
+- **Real-ESRGAN Image Upscaling Module**: Complete AI-powered image upscaling functionality
+  - 4× to 8× super-resolution upscaling using Real-ESRGAN deep learning model
+  - Adjustable scale factor slider (2×, 4×, 6×, 8×)
+  - GPU acceleration toggle with automatic CPU fallback
+  - Drag-and-drop image upload zone
+  - Real-time progress tracking during upscaling
+  - Automatic model weights download on first use
+  - Image preview canvas with before/after comparison
+  - Save upscaled images to custom locations
+  - Database integration for processing queue tracking
+  - Thread-safe async processing to avoid UI blocking
+
+### Changed
+- **Tab Navigation**: Added "Upscale" tab to sidebar navigation with ✨ icon
+- **Tab Enum**: Added `REALESRGAN` to `Tab` enum in settings model
+- **App Loading**: Updated app.py to load RealESRGANTab component
+
+### Technical Details
+- **Dependencies**: Added py-real-esrgan>=2.0.0, torch>=2.0.0, torchvision>=0.15.0, numpy>=1.24.0
+- **Model**: RealESRGAN_x4plus.pth (downloaded automatically by py-real-esrgan)
+- **Python 3.14 Compatibility**: Uses py-real-esrgan package instead of basicsr/realesrgan for better Python 3.14 support
+- **Thread Safety**: All upscaling operations run in background threads with UI callbacks
+- **Error Handling**: Comprehensive error handling with toast notifications
+
+### Documentation Updates
+- Created TICKET-0005 documenting Real-ESRGAN implementation
+- Updated requirements.txt with new dependencies
+- Updated setup_gui.py to download RealESRGAN model during installation (67 MB)
+- Installation now downloads both u2net.onnx (176 MB) and RealESRGAN_x4plus.pth (67 MB) upfront
+
+---
+
 ## [2.0.0] - 2026-05-21
 
 ### Added

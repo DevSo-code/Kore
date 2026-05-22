@@ -11,6 +11,13 @@ rembg[cpu]>=2.0.75
 yt-dlp>=2024.3.10
 spotdl>=4.4.0
 
+# Real-ESRGAN Image Upscaling
+py-real-esrgan>=2.0.0
+torch>=2.0.0
+torchvision>=0.15.0
+numpy>=1.24.0
+huggingface_hub<0.26.0
+
 # Data & Configuration
 pydantic>=2.9.0
 pydantic-settings>=2.6.0

@@ -44,6 +44,9 @@ TEXT_MUTED = "#5A5F80"
 ONNX_MODEL_URL = "https://github.com/danielgatis/rembg/releases/download/v0.0.0/u2net.onnx"
 ONNX_MODEL_SIZE = 176140862  # 176 MB
 
+REALESRGAN_MODEL_URL = "https://github.com/xinntao/Real-ESRGAN/releases/download/v0.1.0/RealESRGAN_x4plus.pth"
+REALESRGAN_MODEL_SIZE = 67000000  # 67 MB
+
 class HoverButton(tk.Button):
     """Custom flat button with hover effects."""
     def __init__(self, master, bg_color=ACCENT_PRIMARY, hover_color="#7C75FF", fg_color=TEXT_PRIMARY, **kwargs):
@@ -139,7 +142,7 @@ class InstallerGUI:
             "Verify System Environment",
             "Setup Python Virtual Env",
             "Install Application Core",
-            "Download AI Models (ONNX)",
+            "Download AI Models (ONNX + Real-ESRGAN)",
             "Initialize App Config & DB",
             "Configure Shortcuts & Launch"
         ]
@@ -293,11 +296,11 @@ class InstallerGUI:
         
         description = (
             "Kore consolidates everyday power-user utilities like AI background removal,\n"
-            "video downloading, and image/file conversion directly on your machine.\n\n"
+            "video downloading, image upscaling, and file conversion directly on your machine.\n\n"
             "This interactive wizard will configure Kore for optimal performance:\n"
             "  •  Create a local Python virtual environment to keep your system clean\n"
             "  •  Install essential dependencies (customtkinter, yt-dlp, etc.)\n"
-            "  •  Pre-download the u2net ONNX model for background removal (176 MB)\n"
+            "  •  Pre-download AI models for background removal and upscaling (243 MB)\n"
             "  •  Set up local database schema and configuration directories\n\n"
             "Everything is installed locally. No telemetry. No internet required after setup."
         )
@@ -616,10 +619,10 @@ class InstallerGUI:
                 
             self.root.after(0, lambda: self.update_step(2, "done"))
 
-            # 4. Download AI Model (u2net.onnx)
+            # 4. Download AI Models (u2net.onnx + RealESRGAN_x4plus.pth)
             self.root.after(0, lambda: self.update_step(3, "active"))
-            self.root.after(0, lambda: self.status_title.configure(text="Downloading Background Removal AI Model..."))
-            self.root.after(0, lambda: self.status_desc.configure(text="Downloading 'u2net.onnx' (176 MB) from Github. Please wait..."))
+            self.root.after(0, lambda: self.status_title.configure(text="Downloading AI Models..."))
+            self.root.after(0, lambda: self.status_desc.configure(text="Downloading background removal and upscaling models (243 MB total). Please wait..."))
             
             # Resolve user cache dir using the newly installed platformdirs in the venv
             self.write_log("\n[4/6] Resolving application cache directory...\n")
@@ -637,16 +640,31 @@ class InstallerGUI:
                 else:
                     cache_dir = Path("~/.cache/Kore").expanduser()
 
+            # Download u2net.onnx for background removal
             model_dir = cache_dir / "models"
             model_path = model_dir / "u2net.onnx"
-            self.write_log(f"Model cache target: {model_path}\n")
+            self.write_log(f"Background removal model cache target: {model_path}\n")
 
             if model_path.exists() and model_path.stat().st_size >= ONNX_MODEL_SIZE - 1000:
                 self.write_log("[INFO] AI model 'u2net.onnx' is already cached. Skipping download.\n")
-                self.root.after(0, lambda: self.progress_bar.set_progress(0.75))
+                self.root.after(0, lambda: self.progress_bar.set_progress(0.5))
             else:
                 model_dir.mkdir(parents=True, exist_ok=True)
-                self._download_file_with_progress(ONNX_MODEL_URL, model_path)
+                # Download with progress mapping to 0.25-0.5 range
+                self._download_file_with_progress(ONNX_MODEL_URL, model_path, progress_range=(0.25, 0.5))
+            
+            # Download RealESRGAN_x4plus.pth for image upscaling
+            realesrgan_dir = cache_dir / "weights"
+            realesrgan_path = realesrgan_dir / "RealESRGAN_x4plus.pth"
+            self.write_log(f"Real-ESRGAN model cache target: {realesrgan_path}\n")
+
+            if realesrgan_path.exists() and realesrgan_path.stat().st_size >= REALESRGAN_MODEL_SIZE - 1000:
+                self.write_log("[INFO] AI model 'RealESRGAN_x4plus.pth' is already cached. Skipping download.\n")
+                self.root.after(0, lambda: self.progress_bar.set_progress(0.75))
+            else:
+                realesrgan_dir.mkdir(parents=True, exist_ok=True)
+                # Download with progress mapping to 0.5-0.75 range
+                self._download_file_with_progress(REALESRGAN_MODEL_URL, realesrgan_path, progress_range=(0.5, 0.75))
             
             self.root.after(0, lambda: self.update_step(3, "done"))
 
@@ -695,7 +713,7 @@ class InstallerGUI:
             self.root.after(0, lambda: self.status_desc.configure(text=f"Error details: {err}"))
             self.root.after(0, lambda: messagebox.showerror("Installation Error", f"An error occurred during installation:\n{err}"))
 
-    def _download_file_with_progress(self, url: str, dest_path: Path):
+    def _download_file_with_progress(self, url: str, dest_path: Path, progress_range: tuple[float, float] = (0.25, 0.75)):
         self.write_log(f"Downloading from: {url}\n")
         req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)'})
         
@@ -730,8 +748,8 @@ class InstallerGUI:
                     progress_text = f"{percent * 100:.1f}% · {downloaded_mb:.1f} MB / {total_mb:.1f} MB"
                     stats_text = f"Speed: {speed_mb:.2f} MB/s  ·  ETA: {int(eta)}s remaining"
                     
-                    # Progress bar mapping (takes 0.25 to 0.75 range)
-                    mapped_progress = 0.25 + (percent * 0.50)
+                    # Progress bar mapping (takes progress_range)
+                    mapped_progress = progress_range[0] + (percent * (progress_range[1] - progress_range[0]))
                     
                     self.root.after(0, lambda p=mapped_progress: self.progress_bar.set_progress(p))
                     self.root.after(0, lambda pt=progress_text: self.status_title.configure(text=f"Downloading AI Model: {pt}"))

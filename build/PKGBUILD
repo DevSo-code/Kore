@@ -2,7 +2,7 @@
 # Maintainer: Your Name <your.email@example.com>
 
 pkgname=kore
-pkgver=2.0.0
+pkgver=2.1.0
 pkgrel=1
 pkgdesc="One app. Every tool. Zero ads. - Local-first desktop utility suite"
 arch=('x86_64')

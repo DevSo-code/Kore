@@ -24,6 +24,7 @@ class Tab(str, Enum):
     IMAGE = "image"
     VIDEO = "video"
     SPOTIFY = "spotify"
+    REALESRGAN = "realesrgan"
     SETTINGS = "settings"
 
 
